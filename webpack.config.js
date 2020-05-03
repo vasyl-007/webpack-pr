@@ -41,5 +41,8 @@ module.exports = {
       filename: "styles.css",
     }),
   ],
-  devServer: {},
+  devServer: {
+    port: 8080,
+  },
+  devtool: "eval-cheap-source-map",
 };
