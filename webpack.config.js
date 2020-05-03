@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 console.log("DIRNAME", __dirname);
 
@@ -18,9 +19,18 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"],
+        use: ["style-loader", "css-loader", "postcss-loader"],
       },
     ],
   },
-  plugins: [new HtmlWebpackPlugin()],
+
+  plugins: [
+    new HtmlWebpackPlugin({
+      filename: "index.html",
+      template: "./src/index.html",
+      inject: true,
+    }),
+    new CleanWebpackPlugin(),
+  ],
+  devServer: {},
 };
