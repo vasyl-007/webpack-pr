@@ -1,48 +1,30 @@
 const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpackMerge = require("webpack-merge");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-console.log("DIRNAME", __dirname);
+const loadModeConfig = (env) =>
+  require(`./build-utils/${env.mode}.config`)(env);
 
-module.exports = {
-  entry: "./src/index.js",
-  output: {
-    path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js",
-  },
-  module: {
-    rules: [
-      {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        use: ["babel-loader"],
+module.exports = (env) =>
+  webpackMerge(
+    {
+      mode: env.mode,
+      context: path.resolve(__dirname, "src"),
+      entry: "./index.js",
+      output: {
+        path: path.resolve(__dirname, "dist"),
+        filename: "[name].bundle.js",
       },
-      {
-        test: /\.css$/,
-        use: [
-          "style-loader",
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          "postcss-loader",
+      module: {
+        rules: [
+          {
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: ["babel-loader"],
+          },
         ],
       },
-    ],
-  },
-
-  plugins: [
-    new HtmlWebpackPlugin({
-      filename: "index.html",
-      template: "./src/index.html",
-      inject: true,
-    }),
-    new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: "styles.css",
-    }),
-  ],
-  devServer: {
-    port: 8080,
-  },
-  devtool: "eval-cheap-source-map",
-};
+      plugins: [new CleanWebpackPlugin()],
+    },
+    loadModeConfig(env)
+  );
