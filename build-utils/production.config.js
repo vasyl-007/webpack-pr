@@ -1,5 +1,6 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 module.exports = (env) => ({
   devtool: "source-map",
@@ -14,6 +15,7 @@ module.exports = (env) => ({
   plugins: [
     new HtmlWebpackPlugin({
       template: "./index.html",
+      //   minify: true,
       minify: {
         collapseWhitespace: true,
         removeComments: true,
@@ -26,5 +28,6 @@ module.exports = (env) => ({
     new MiniCssExtractPlugin({
       filename: "styles.css",
     }),
+    new OptimizeCssAssetsPlugin(),
   ],
 });

@@ -15,11 +15,13 @@ module.exports = (env) => ({
     new HtmlWebpackPlugin({
       template: "./index.html",
     }),
+
   ],
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     compress: true,
     port: 8080,
-    // stats: "errors-only",
+    clientLogLevel: "warning",
+    stats: "errors-only",
   },
 });
